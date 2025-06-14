@@ -12,10 +12,12 @@ const app = express();
 const PORT = 3001;
 
 //const SECRET = 'secret-key';
-const SECRET = process.env.JWT_SECRET;
 
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*', // если переменная не задана, разрешаем все
+  credentials: true
+}));
 
-app.use(cors());
 app.use(bodyParser.json());
 
 const db = new sqlite3.Database('./database.db');
