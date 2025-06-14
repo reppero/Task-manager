@@ -4,6 +4,7 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
+    "build": "cd task-manager-frontend && npm install && npm run build"
     "start": "node index.js"
   },
   "dependencies": {
