@@ -1,4 +1,6 @@
 // 📁 backend/index.js
+require('dotenv').config();
+
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -8,7 +10,10 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = 3001;
-const SECRET = 'secret-key';
+
+//const SECRET = 'secret-key';
+const SECRET = process.env.JWT_SECRET;
+
 
 app.use(cors());
 app.use(bodyParser.json());
