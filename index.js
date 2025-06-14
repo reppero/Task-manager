@@ -10,8 +10,18 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = 3001;
+const SECRET = process.env.JWT_SECRET;
 
-//const SECRET = 'secret-key';
+const path = require('path');
+
+// Отдаём фронтенд из папки build
+app.use(express.static(path.join(__dirname, 'task-manager-frontend/build')));
+
+// Для всех остальных маршрутов (которые не API) отдаём index.html
+//app.get('*', (req, res) => {
+//  res.sendFile(path.join(__dirname, 'task-manager-frontend/build', 'index.html'));
+//});
+
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*', // если переменная не задана, разрешаем все

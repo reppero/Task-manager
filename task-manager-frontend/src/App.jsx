@@ -2,7 +2,9 @@
 // frontend
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:3001';
+//const API_URL = 'http://localhost:3001'; //
+const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+
 
 function App() {
   const [token, setToken] = useState(null);
@@ -16,7 +18,7 @@ function App() {
   async function login() {
     setError('');
     try {
-      const res = await fetch(`${API_URL}/login`, {
+	  const res = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ username, password }),
@@ -83,7 +85,8 @@ function CreateUserForm({ token }) {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:3001/users', {
+	  
+      const res = await fetch(`${API_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +135,7 @@ function CreateTaskForm({ token }) {
 
   // Загрузка пользователей при загрузке формы
   useEffect(() => {
-    fetch('http://localhost:3001/all-users', {
+    fetch(`${API_URL}/all-users`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -158,7 +161,7 @@ function CreateTaskForm({ token }) {
       const failedUsers = [];
   
       for (const userId of task.assignees) {
-        const res = await fetch('http://localhost:3001/tasks', {
+        const res = await fetch(`${API_URL}/tasks`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -240,10 +243,10 @@ function TasksList({ token, role }) {
 	  async function fetchData() {
 		try {
 		  const [tasksRes, usersRes] = await Promise.all([
-			fetch('http://localhost:3001/tasks', {
+			fetch(`${API_URL}/tasks`, {
 			  headers: { 'Authorization': `Bearer ${token}` }
 			}),
-			role === 'admin' ? fetch('http://localhost:3001/users', {
+			role === 'admin' ? fetch(`${API_URL}/users`, {
 			  headers: { 'Authorization': `Bearer ${token}` }
 			}) : Promise.resolve({ json: async () => [] })
 		  ]);
@@ -276,7 +279,7 @@ function TasksList({ token, role }) {
     if (!window.confirm('Отправить на подтверждение?')) return;
 
     try {
-      const res = await fetch(`http://localhost:3001/tasks/${id}/status`, {
+      const res = await fetch(`${API_URL}/tasks/${id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -297,7 +300,7 @@ function TasksList({ token, role }) {
 
   const changeStatus = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:3001/tasks/${id}/status`, {
+      const res = await fetch(`${API_URL}/tasks/${id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -320,7 +323,7 @@ function TasksList({ token, role }) {
     if (!window.confirm('Удалить задачу?')) return;
   
     try {
-      const res = await fetch(`http://localhost:3001/tasks/${id}`, {
+      const res = await fetch(`${API_URL}/tasks/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -420,7 +423,7 @@ function UsersList({ token }) {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch('http://localhost:3001/users', {
+      const res = await fetch(`${API_URL}/users`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -437,7 +440,7 @@ function UsersList({ token }) {
   const deleteUser = async (id) => {
     if (!window.confirm('Удалить пользователя?')) return;
     try {
-      const res = await fetch(`http://localhost:3001/users/${id}`, {
+      const res = await fetch(`${API_URL}/users/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -468,7 +471,7 @@ function UsersList({ token }) {
 
   const saveEdit = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3001/users/${id}`, {
+      const res = await fetch(`${API_URL}/users/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
