@@ -18,9 +18,9 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'task-manager-frontend/build')));
 
 // Для всех остальных маршрутов (которые не API) отдаём index.html
-//app.get('*', (req, res) => {
-//  res.sendFile(path.join(__dirname, 'task-manager-frontend/build', 'index.html'));
-//});
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'task-manager-frontend/build', 'index.html'));
+});
 
 
 app.use(cors({
