@@ -17,12 +17,6 @@ const path = require('path');
 // Отдаём фронтенд из папки build
 app.use(express.static(path.join(__dirname, 'task-manager-frontend/build')));
 
-// Для всех остальных маршрутов (которые не API) отдаём index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'task-manager-frontend/build', 'index.html'));
-});
-
-
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*', // если переменная не задана, разрешаем все
   credentials: true
@@ -333,5 +327,8 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-
+// Для всех остальных маршрутов (которые не API) отдаём index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'task-manager-frontend/build', 'index.html'));
+});
 
